@@ -6,31 +6,57 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.filechooser.*;
+import java.io.*;
 
 /**
  * A frame with a button panel
  * */
 class ButtonFrame extends JFrame {
     public JPanel actionPanel;
+    public JFileChooser chooser;
 
     public ButtonFrame() {
 
 //        // create buttons
-//        JButton openButton = new JButton("Open");
+        JButton openButton = new JButton("Open");
+        openButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event)
+            {
+                chooser.setCurrentDirectory(new File("."));
+
+                // show file chooser dialog
+                int result = chooser.showOpenDialog(ButtonFrame.this);
+
+//            // if image file accepted, set it as icon of the label
+//               if (result == JFileChooser.APPROVE_OPTION)
+//            {
+//                String name = chooser.getSelectedFile().getPath();
+//                label.setIcon(new ImageIcon(name));
+//                pack();
+//            }
+            }
+        });
+
 //        JButton zoomInButton = new JButton("Zoom In");
 //        JButton zoomOutButton = new JButton("Zoom Out");
 //        JButton defaultSizeButton = new JButton("100%");
         JButton quitButton = new JButton("Quit");
 
         actionPanel = new JPanel();
+//        actionPanel.setLayout(new GridLayout(5, 1));
 
-        makeButton("Open", Color.yellow);
+
+        actionPanel.add(openButton);
+//        makeButton("Open", Color.yellow);
         makeButton("Zoom In", Color.blue);
         makeButton("100%", Color.white);
         makeButton("Zoom Out", Color.red);
 //        makeButton("Quit", Color.black);
         actionPanel.add(quitButton);
-        actionPanel.add(new ImageComponent());
+
+        // set up file chooser
+        chooser = new JFileChooser();
 
 //        // add buttons to panel
 //        actionPanel.add(openButton);
@@ -42,7 +68,9 @@ class ButtonFrame extends JFrame {
 
 
         // add panel to frame
-        add(actionPanel);
+        add(new ImageComponent());
+        add(actionPanel, BorderLayout.SOUTH);
+
 
 //        // create button actions
 //        ColorAction yellowAction = new ColorAction(Color.YELLOW);
@@ -58,7 +86,7 @@ class ButtonFrame extends JFrame {
 //        zoomInButton.addActionListener(blueAction);
 //        zoomOutButton.addActionListener(redAction);
         quitButton.addActionListener(new ActionListener() {
-            @Override
+//            @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
