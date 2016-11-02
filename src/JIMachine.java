@@ -4,8 +4,7 @@ import javax.swing.*;
 public class JIMachine {
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
-//            JFrame frame = new ImageFrame();
-            JFrame frame = new ButtonFrame();
+            JFrame frame = new ImageFrame();
             frame.setTitle("JIMachine");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.pack();
