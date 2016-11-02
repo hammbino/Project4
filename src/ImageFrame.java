@@ -18,6 +18,7 @@ import java.io.IOException;
 class ImageFrame extends JFrame {
 
     BufferedImage image;
+    float zoom = 1;
 
     public ImageFrame() {
         setSize(getPreferredSize());
@@ -42,7 +43,7 @@ class ImageFrame extends JFrame {
                     e.printStackTrace();
                     System.out.println("Could not open file.");
                 }
-                this.repaint();
+                repaint();
             } else if(result == JFileChooser.CANCEL_OPTION){
                 System.out.println("No File Selected");
             }
@@ -51,20 +52,23 @@ class ImageFrame extends JFrame {
         JButton zoomInButton = new JButton("Zoom In");
         zoomInButton.addActionListener(e -> {
 //            Graphics g = image.createGraphics();
-//            g.drawImage(image, 0, 0, (int) ((image.getWidth() * .25) + image.getWidth()), (int) ((image.getHeight() * .25) + image.getHeight()), this);
+//            g.drawImage(image, 0, 0, (int) ((image.getWidth() * .25) + image.getWidth()), (int) ((image.getHeight() * .25) + image.getHeight()), null);
+//            g.drawImage(image, 0, 0, image.getWidth() * 2, image.getHeight() * 2, this);
 //            this.repaint();
-            BufferedImage temp = resizeImage(image, image.getType());
-            Graphics g = temp.createGraphics();
-            g.drawImage(temp, 0, 0, this);
-            this.repaint();
+//            BufferedImage temp = resizeImage(image, image.getType());
+//            Graphics g = temp.createGraphics();
+//            g.drawImage(temp, 0, 0, this);
+            zoom += .25;
+            repaint();
 
         });
 
         JButton defaultSizeButton = new JButton("100%");
         defaultSizeButton.addActionListener(e -> {
-            Graphics g = image.createGraphics();
-            g.drawImage(image, 0, 0, this);
-            this.repaint();
+//            Graphics g = image.createGraphics();
+//            g.drawImage(image, 0, 0, this);
+            zoom = 1;
+            repaint();
         });
 
         JButton zoomOutButton = new JButton("Zoom Out");
@@ -72,10 +76,11 @@ class ImageFrame extends JFrame {
 //            Graphics g = image.createGraphics();
 //            g.drawImage(image, 0, 0, (int) (image.getWidth() - (image.getWidth() * .25)), (int) (image.getHeight() - (image.getHeight() * .25)), this);
 //            this.repaint();
-            BufferedImage temp = resizeImageOut(image, image.getType());
-            Graphics g = temp.createGraphics();
-            g.drawImage(image, 0, 0, this);
-            this.repaint();
+//            BufferedImage temp = resizeImageOut(image, image.getType());
+//            Graphics g = temp.createGraphics();
+//            g.drawImage(image, 0, 0, this);
+            zoom -= .25;
+            repaint();
         });
 
         JButton quitButton = new JButton("Quit");
@@ -88,7 +93,7 @@ class ImageFrame extends JFrame {
         buttonPanel.add(quitButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
-        add(picPanel, BorderLayout.CENTER);
+        add(picPanel);
     }
 
     /**
@@ -98,7 +103,30 @@ class ImageFrame extends JFrame {
 
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
-            g.drawImage(image, 0, 0, this);
+//            g.drawImage(image, 0, 0, this);
+
+//            Graphics2D g2d = (Graphics2D) g;
+
+            // Backup original transform
+//            AffineTransform originalTransform = g2d.getTransform();
+
+//            g2d.translate(panX, panY);
+//            g2d.scale(zoom, zoom);
+
+            if(image != null) {
+                int w = image.getWidth();
+                int h = image.getHeight();
+                g.drawImage(image, 0, 0, (int) (w * zoom), (int) (h * zoom), null);
+//
+//                int scale = 2;
+//                g.drawImage(image, w, h, (w * scale), (h * scale), null);
+            }
+            // paint the image here with no scaling
+//            g.drawImage(image, 0, 0, null);
+//            g2d.drawImage(image, 0, 0, image.getWidth() * 2, image.getHeight() * 2, this);
+
+            // Restore original transform
+//            g2d.setTransform(originalTransform);
         }
     }
 
